@@ -27,5 +27,10 @@ class Node:
 
         return subsequent_node
 
-
+    @staticmethod
+    def is_goal_node(node: 'Node', goals):
+        for butter in node.butter:
+            if butter in goals:
+                return True
+        return False
 
