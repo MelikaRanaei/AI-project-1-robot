@@ -21,6 +21,9 @@ if __name__ == "__main__":
     print("------------------------------------------------")
     print("robot: ", end="")
     print(table.robot)
+    print("------------------------------------------------")
+    print("initial state heuristic: " , end="")
+    print(table.h_function)
 """
 5 5
 1 1 1 1 1
@@ -29,3 +32,6 @@ if __name__ == "__main__":
 2 2 x 1 1
 1r 2 2 2 1
 """
+
+
+

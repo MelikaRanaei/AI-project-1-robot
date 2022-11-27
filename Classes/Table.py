@@ -1,5 +1,5 @@
 from numpy import array
-from Modules.Functions import cost_of_cells, find
+from Modules.Functions import cost_of_cells, find, heuristic
 
 
 class Table:
@@ -20,6 +20,8 @@ class Table:
 
         # A tuple which is shows the location of robot
         self.robot = find(matrix, 'r')
+
+        self.h_function = heuristic(matrix)
 
     def is_on_table(self, y, x):
         return 0 < x <= self.width and 0 < y <= self.height
