@@ -21,7 +21,10 @@ class Table:
         # A tuple which is shows the location of robot
         self.robot = find(matrix, 'r')
 
-    def is_on_table(self, y, x):
+    def __getitem__(self, ind):
+        return self.board[ind]
+
+    def is_on_table(self, x, y):
         return 0 < x <= self.width and 0 < y <= self.height
 
     def __str__(self):
