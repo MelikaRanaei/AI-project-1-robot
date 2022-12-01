@@ -1,9 +1,10 @@
 from Classes.Table import Table
 from Modules.Action import check_action
 
+
 class Node:
 
-    def __init__(self, robot, butter = []):
+    def __init__(self, robot, butter=[]):
         self.robot = robot
         self.butter = butter
 
