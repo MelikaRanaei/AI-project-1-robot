@@ -6,8 +6,8 @@ class Table:
     def __init__(self, matrix):
 
         self.initial_matrix = matrix
-        self.width = len(matrix)
-        self.height = len(matrix[0])
+        self.width = len(matrix[0])
+        self.height = len(matrix)
 
         # A 2D array which is g(n) of every cells
         self.board = cost_of_cells(matrix)
@@ -19,13 +19,14 @@ class Table:
         self.goals = find(matrix, 'p')
 
         # A tuple which is shows the location of robot
-        self.robot = find(matrix, 'r')
+        self.robot = find(matrix, 'r')[0]
 
     def __getitem__(self, ind):
         return self.board[ind]
 
     def is_on_table(self, x, y):
-        return 0 < x <= self.width and 0 < y <= self.height
+        # print(f"w is: {self.width}, h is: {self.height}")
+        return 0 <= x < self.width and 0 <= y < self.height
 
     def __str__(self):
         print("Given matrix is: ")
