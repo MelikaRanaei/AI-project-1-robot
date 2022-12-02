@@ -1,4 +1,5 @@
 from math import inf
+from numpy import array, flip
 
 
 def is_number(a):
@@ -28,10 +29,20 @@ def cost_of_cells(matrix):
 
 def find(matrix, sign):
     row, column = len(matrix), len(matrix[0])
+    tmp1 = []
+    for j in range(column):
+        tmp2 = []
+        for i in range(row):
+            tmp2.append(matrix[i][j])
+        tmp1.append(tmp2)
+
+    for i in range(column):
+        tmp1[i] = flip(array(tmp1[i]))
+
     arr = []
-    for i in range(row):
-        for j in range(column):
-            if not (is_number(matrix[i][j]) and matrix[i][j] == 'x'):
-                if matrix[i][j][-1] == sign:
+    for i in range(column):
+        for j in range(row):
+            if not (is_number(tmp1[i][j]) and tmp1[i][j] == 'x'):
+                if tmp1[i][j][-1] == sign:
                     arr.append((i, j))
     return arr
