@@ -51,7 +51,7 @@ def check_action(x, y, node, table_board: Table):
             print(f"table_board[Rx+x][Ry+y]: {table_board.board[height-yy-1][xx]}\n")
             successor_array.append(
                 (
-                    Node((robot_y + y, robot_x + x), node.butter),
+                    Node((robot_x + x, robot_y + y), node.butter),
                     (x, y),
                     table_board.board[height-yy-1][xx]
                  )
@@ -71,7 +71,7 @@ def check_action(x, y, node, table_board: Table):
                     return
 
                 # After movement of robot butter on point:
-                if (robot_y + y, robot_x + x) in table_board.goals:
+                if (robot_x + x, robot_y + y) in table_board.goals:
                     return
 
                 # Now the action is validated and the butter won't fall off the table
@@ -80,8 +80,8 @@ def check_action(x, y, node, table_board: Table):
 
                 # for making a movement we must update the list of butters and robot positions.
                 butters_after_movement = node.butter.copy()
-                butters_after_movement.remove((robot_y + y, robot_x + x))
-                butters_after_movement.append((robot_y + 2*y, robot_x + 2*x))
+                butters_after_movement.remove((robot_x + x, robot_y + y))
+                butters_after_movement.append((robot_x + 2*x, robot_y + 2*y))
 
                 print(f"width: {table_board.width}, height: {height}")
                 print(f"table_board[Rx][Ry]: {table_board.board[height-robot_y-1][robot_x]}")
@@ -91,7 +91,7 @@ def check_action(x, y, node, table_board: Table):
                 # print(f"table_board[Rx+x][Ry+y]: {table_board.board[robot_x+x][robot_y+y]}\n")
                 successor_array.append(
                     (
-                        Node((robot_y + y, robot_x + x), butters_after_movement),
+                        Node((robot_x + x, robot_y + y), butters_after_movement),
                         (x, y),
                         table_board.board[height - yy - 1][xx]
                     )
