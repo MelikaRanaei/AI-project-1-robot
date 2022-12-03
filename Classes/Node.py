@@ -53,8 +53,7 @@ def check_action(x, y, node, table_board: Table):
                 (
                     Node((robot_y + y, robot_x + x), node.butter),
                     (x, y),
-                    max(table_board.board[height-yy-1][xx],
-                        table_board.board[height - robot_y - 1][robot_x])
+                    table_board.board[height-yy-1][xx]
                  )
             )
         else:
@@ -94,8 +93,7 @@ def check_action(x, y, node, table_board: Table):
                     (
                         Node((robot_y + y, robot_x + x), butters_after_movement),
                         (x, y),
-                        max(table_board.board[height - yy - 1][xx],
-                            table_board.board[height - robot_y - 1][robot_x])
+                        table_board.board[height - yy - 1][xx]
                     )
                 )
     return successor_array
