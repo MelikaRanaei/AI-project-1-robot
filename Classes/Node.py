@@ -100,16 +100,49 @@ def check_action(x, y, node, table_board: Table):
 
 
 class Node:
+    parent_node: 'Node'
+    children_node: ['Node']
 
-    def __init__(self, robot, butter=[]):
-        self.robot = robot
-        self.butter = butter
+    def __init__(self, *args):
+        if len(args) == 2:
+            robot = args[0]
+            butter = args[1]
 
-    def __hash__(self):
-        hash_of_current_node = 0
-        for i in self.butter:
-            hash_of_current_node += hash(self.butter[i])
-        return hash_of_current_node + hash(self.robot)
+            self.robot = robot
+            self.butter = butter
+
+        else:
+            robot = args[0]
+            butter = args[1]
+            move = args[2]
+            depth = args[3]
+            parent = args[4]
+            cost = args[5]
+
+            self.robot = robot
+            self.butter = butter
+            self.last_move = move
+            self.depth = depth      # Use in search algorithms
+            self.parent_node = parent
+            self.g_n = cost
+            self.children_node = None
+            self.is_visited = False
+
+    # the returned array from the successor will be passed
+    #   to the join_children function to make a Tree
+    def join_children(self, successor_list: [('Node', tuple, int)]):
+        children = []
+        for tup in successor_list:
+            robot = tup[0].robot
+            butter = tup[0].butter
+            move = tup[1]
+            depth = self.depth + 1
+            parent = self
+            cost = tup[2] + self.g_n
+            children.append(Node(robot, butter, move, depth, parent, cost))
+        self.is_visited = True
+        self.children_node.extend(children)
+        return children
 
     @staticmethod
     def successor(current_node: 'Node', table_board: Table):
@@ -123,6 +156,9 @@ class Node:
         subsequent_node.extend(check_action(-1, 0, current_node, table_board))
         subsequent_node.extend(check_action(0, -1, current_node, table_board))
 
+        # Joining each expanded node to the children array of the current node.
+        current_node.join_children(subsequent_node)
+
         return subsequent_node
 
     @staticmethod
@@ -131,3 +167,14 @@ class Node:
             if butter in goals:
                 return True
         return False
+
+    # To make a class hashable we need to
+    #   implement eq and hash attributes
+    def __eq__(self, other: 'Node'):
+        return self.robot == other.robot and self.butter == other.butter
+
+    def __hash__(self):
+        hash_of_current_node = 0
+        for i in self.butter:
+            hash_of_current_node += hash(self.butter[i])
+        return hash_of_current_node + hash(self.robot)
