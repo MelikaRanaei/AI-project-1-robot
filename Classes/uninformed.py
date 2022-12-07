@@ -1,4 +1,4 @@
-import Classes.Node
+from Classes.Node import Node
 
 def bfs(current_node: 'Node'):
     pass
