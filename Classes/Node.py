@@ -103,30 +103,15 @@ class Node:
     parent_node: 'Node'
     children_node: ['Node']
 
-    def __init__(self, *args):
-        if len(args) == 2:
-            robot = args[0]
-            butter = args[1]
-
-            self.robot = robot
-            self.butter = butter
-
-        else:
-            robot = args[0]
-            butter = args[1]
-            move = args[2]
-            depth = args[3]
-            parent = args[4]
-            cost = args[5]
-
-            self.robot = robot
-            self.butter = butter
-            self.last_move = move
-            self.depth = depth      # Use in search algorithms
-            self.parent_node = parent
-            self.g_n = cost
-            self.children_node = None
-            self.is_visited = False
+    def __init__(self, robot, butter=[], move=None, depth=0, parent=None ,cost=0, children_node=[]):
+        self.robot = robot
+        self.butter = butter
+        self.last_move = move
+        self.depth = depth #use in search algorithms
+        self.parent_node = parent
+        self.g_n = cost
+        self.children_node = children_node
+        self.is_visited = False
 
     # the returned array from the successor will be passed
     #   to the join_children function to make a Tree
