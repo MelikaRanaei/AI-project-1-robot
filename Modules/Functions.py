@@ -58,3 +58,8 @@ def find2(matrix, sign):
                     arr2.append(i)
                     arr2.append(j)
     return arr2
+
+def heuristic(matrix):
+    butter_location = find2(matrix , 'b')
+    goal_location = find2(matrix , 'p')
+    return (abs(butter_location[0]-goal_location[0])+abs(butter_location[1]-goal_location[1]))
