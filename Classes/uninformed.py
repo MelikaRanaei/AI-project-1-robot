@@ -2,6 +2,7 @@ from Classes.Node import Node , is_goal_node , succesor
 from Classes.Table import Table
  
         
+
 def bfs(table:Table):
     node=Node(table.robot,table.butter)
     if is_goal_node(node,table.goals):
@@ -11,14 +12,14 @@ def bfs(table:Table):
     
     while queue:
         node = queue.pop(0)
-        for child in succesor(node , table):
+        for child in successor(node , table):
             if is_goal_node(child,table.goals):
                 return child
             else:
                 if child.is_visited==False:
-                    queue.extend(succesor(child , table))
+                    queue.extend(successor(child , table))
                 
-    return -1    
+    return -1  
 
 
 
