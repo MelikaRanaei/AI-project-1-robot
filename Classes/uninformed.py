@@ -15,7 +15,8 @@ def bfs(table:Table):
             if is_goal_node(child,table.goals):
                 return child
             else:
-                queue.extend(succesor(child , table))
+                if child.is_visited==False:
+                    queue.extend(succesor(child , table))
                 
     return -1    
 
