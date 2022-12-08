@@ -1,4 +1,5 @@
 from Classes.Table import Table, array
+from Classes.uninformed import ucs
 
 
 if __name__ == "__main__":
@@ -8,6 +9,8 @@ if __name__ == "__main__":
         matrix.append(input().split(" "))
 
     table = Table(matrix)
+    node = Node(table.robot , table.butter)
+    Ucs.ucs(node,table)
     print(table)
     print("------------------------------------------------")
     print("board: ")

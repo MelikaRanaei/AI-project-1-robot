@@ -54,8 +54,16 @@ def DFS(table:Table):
    
    
 
-def ucs():
-    pass
+def ucs(initial_node: Node , table: Table):
+    ucs_Q = Queue()
+    ucs_Q.put(initial_node)
+    flag = True
+    while not ucs_Q.empty():
+        poped_node = ucs_Q.get()
+        # print(poped_node.robot)
+        popedlist = poped_node.successor(poped_node, table)
+        for child in popedlist:
+            ucs_Q.put(child[0])
 
 def ids():
     pass
