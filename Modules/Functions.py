@@ -46,20 +46,9 @@ def find(matrix, sign):
                 if tmp1[i][j][-1] == sign:
                     arr.append((i, j))
     return arr
-def find2(matrix, sign):
-    row, column = len(matrix), len(matrix[0])
-    arr = []
-    arr2 = []
-    for i in range(row):
-        for j in range(column):
-            if not (is_number(matrix[i][j]) and matrix[i][j] == 'x'):
-                if matrix[i][j][-1] == sign:
-                    arr.append((i, j))
-                    arr2.append(i)
-                    arr2.append(j)
-    return arr2
+
 
 def heuristic(matrix):
-    butter_location = find2(matrix , 'b')
-    goal_location = find2(matrix , 'p')
+    butter_location = find(matrix , 'b')
+    goal_location = find(matrix , 'p')
     return (abs(butter_location[0]-goal_location[0])+abs(butter_location[1]-goal_location[1]))
