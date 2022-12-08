@@ -46,3 +46,15 @@ def find(matrix, sign):
                 if tmp1[i][j][-1] == sign:
                     arr.append((i, j))
     return arr
+def find2(matrix, sign):
+    row, column = len(matrix), len(matrix[0])
+    arr = []
+    arr2 = []
+    for i in range(row):
+        for j in range(column):
+            if not (is_number(matrix[i][j]) and matrix[i][j] == 'x'):
+                if matrix[i][j][-1] == sign:
+                    arr.append((i, j))
+                    arr2.append(i)
+                    arr2.append(j)
+    return arr2
