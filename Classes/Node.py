@@ -21,7 +21,7 @@ def is_it_validate_action(x, y, robot_x, robot_y, table_board):
     xx = robot_x + x
     yy = robot_y + y
     height = table_board.height
-    if table_board.board[height-yy-1][xx] == float('inf'):
+    if table_board.board[height-yy-1][xx-1] == float('inf'):
         print(Colors.WARNING + f"movement " + Colors.UNDERLINE + f"{(x, y)}" + Colors.reset
               + Colors.WARNING + " is not allowed because it is 'X' cell.\n" + Colors.reset)
         flag = False
