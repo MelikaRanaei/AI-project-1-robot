@@ -159,7 +159,9 @@ class Node:
         return self.robot == other.robot and self.butter == other.butter
 
     def __hash__(self):
-        hash_of_current_node = 0
+        hash_of_current_node = hash(self.robot)
         for i in self.butter:
-            hash_of_current_node += hash(self.butter[i])
-        return hash_of_current_node + hash(self.robot)
+            hash_of_current_node += hash(i)
+        return hash_of_current_node 
+    
+
