@@ -4,54 +4,38 @@ from Classes.Node import Node
 from Classes.Table import Table
 
 
+def BFS(node: 'Node'):
 
-def BFS(table:Table):
-    
-    node=Node(table.robot,table.butter)
-    
-    queue=[node]
-    
+    queue = [node]
     while queue:
-     
         node = queue.pop(0)
 
-        if Node.is_goal_node(node,table.goals):
-        
-            return node
-#             return node.find_path_from_source()
-        else:
-            node.is_visited=True
-            
-        Node.successor(node , table) 
-        
-        queue.extend(node.children_node)
-         
-    return -1           
-                
-                
-            
-def DFS(table:Table):
-    
-    node = Node(table.robot,table.butter)
+        if node.is_goal_node():
+            return node.last_move
 
-    stack=[node]
-    
-    while stack:
-     
+        for i in range(4):
+            node.successor(i)
+
+        queue.extend(node.children)
+    print("BFS:=THERE=IS=NO=GOAL=NODE")
+    return -1          
+                
+
+
+def DFS(node: 'Node'):
+
+    stack = [node]
+    while queue:
         node = stack.pop()
-        
-        if Node.is_goal_node(node,table.goals):
-         
-            return node
-#             return node.find_path_from_source()
-        
-        else:
-            node.is_visited=True
-            
-        Node.successor(node , table)
-        
-        stack.extend(node.children_node[::-1])
 
+        if node.is_goal_node():
+            return node.last_move
+
+        for i in range(4):
+            node.successor(i)
+
+        stack.extend(node.children)
+    print("BFS:=THERE=IS=NO=GOAL=NODE")
     return -1 
    
 
