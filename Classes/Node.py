@@ -143,16 +143,5 @@ class Node:
         else:
             return False
 
-
-    # To make a class hashable we need to
-    #   implement eq and hash attributes
-    def __eq__(self, other: 'Node'):
-        return self.robot == other.robot and self.butter == other.butter
-
-    def __hash__(self):
-        hash_of_current_node = hash(self.robot)
-        for i in self.butter:
-            hash_of_current_node += hash(i)
-        return hash_of_current_node 
     
 
