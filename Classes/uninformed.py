@@ -26,9 +26,9 @@ def BFS(node: 'Node'):
             
 def DFS(node: 'Node'):
 
-    queue = [node]
+    stack = [node]
     while queue:
-        node = queue.pop()
+        node = stack.pop()
 
         if node.is_goal_node():
             return node.last_move
@@ -36,11 +36,10 @@ def DFS(node: 'Node'):
         for i in range(4):
             node.successor(i)
 
-        queue.extend(node.children)
+        stack.extend(node.children)
         
     print("THERE=IS=NO=GOAL=NODE")
-    return -1
-   
+    return -1 
 
 
 def ucs(initial_node: Node, table: Table):
