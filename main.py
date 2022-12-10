@@ -1,4 +1,4 @@
-from Classes.Table import Table, array
+from Classes.Table import Table
 from Classes.uninformed import ucs, BFS
 from Classes.Node import Node
 
@@ -10,22 +10,34 @@ if __name__ == "__main__":
 
     table = Table(matrix)
     # tree = Tree()
-    node = Node(table.robot, table.butter)
-    ucs(node, table)
+    node = Node(matrix, [], [], 0, 0)
+    path = ucs(node)
+    s = ""
+    for i in range(len(path)):
+        if path[i] == (1, 0):
+            s += "R"
+        elif path[i] == (-1, 0):
+            s += "L"
+        elif path[i] == (0, 1):
+            s += "U"
+        else:
+            s += "D"
+
+
     #BFS(table)
-    print(table)
-    print("------------------------------------------------")
-    print("board: ")
-    print(array(table.board))
-    print("------------------------------------------------")
-    print("butters: ", end="")
-    print(table.butter)
-    print("------------------------------------------------")
-    print("goals: ", end="")
-    print(table.goals)
-    print("------------------------------------------------")
-    print("robot: ", end="")
-    print(table.robot)
+    # print(table)
+    # print("------------------------------------------------")
+    # print("board: ")
+    # print((table.board))
+    # print("------------------------------------------------")
+    # print("butters: ", end="")
+    # print(table.butter)
+    # print("------------------------------------------------")
+    # print("goals: ", end="")
+    # print(table.goals)
+    # print("------------------------------------------------")
+    # print("robot: ", end="")
+    # print(table.robot)
 """
 5 5
 1 1 1 1 1
