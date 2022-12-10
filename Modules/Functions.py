@@ -51,4 +51,6 @@ def find(matrix, sign):
 def heuristic(matrix):
     butter_location = find(matrix , 'b')
     goal_location = find(matrix , 'p')
-    return (abs(butter_location[0]-goal_location[0])+abs(butter_location[1]-goal_location[1]))
+    b1_p1 = abs(butter_location[0][0]-goal_location[0][0])+abs(butter_location[0][1]-goal_location[0][1])
+    b2_p2 = abs(butter_location[1][0]-goal_location[1][0])+abs(butter_location[1][1]-goal_location[1][1])
+    return (b1_p1 + b2_p2)
