@@ -1,5 +1,5 @@
 from Classes.Table import Table
-from Classes.uninformed import ucs, BFS
+from Classes.uninformed import ucs, BFS , DFS, DLS, IDS
 from Classes.Node import Node
 
 if __name__ == "__main__":
@@ -11,7 +11,7 @@ if __name__ == "__main__":
     table = Table(matrix)
     # tree = Tree()
     node = Node(matrix, [], [], 0, 0)
-    path = ucs(node)
+    path = BFS(node)
     s = ""
     for i in range(len(path)):
         if path[i] == (1, 0):
@@ -25,19 +25,7 @@ if __name__ == "__main__":
 
 
     #BFS(table)
-    # print(table)
-    # print("------------------------------------------------")
-    # print("board: ")
-    # print((table.board))
-    # print("------------------------------------------------")
-    # print("butters: ", end="")
-    # print(table.butter)
-    # print("------------------------------------------------")
-    # print("goals: ", end="")
-    # print(table.goals)
-    # print("------------------------------------------------")
-    # print("robot: ", end="")
-    # print(table.robot)
+
 """
 5 5
 1 1 1 1 1
