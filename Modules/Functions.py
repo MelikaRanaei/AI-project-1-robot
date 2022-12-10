@@ -54,3 +54,4 @@ def heuristic(matrix):
     b1_p1 = abs(butter_location[0][0]-goal_location[0][0])+abs(butter_location[0][1]-goal_location[0][1])
     b2_p2 = abs(butter_location[1][0]-goal_location[1][0])+abs(butter_location[1][1]-goal_location[1][1])
     return (b1_p1 + b2_p2)
+
