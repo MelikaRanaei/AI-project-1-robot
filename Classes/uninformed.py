@@ -62,5 +62,27 @@ def ucs(initial_node: Node, table: Table):
                 print(child)
 
 
-def ids():
-    pass
+def DLS(node: 'Node', limit):
+    
+    stack=[node]
+
+    result = None
+
+    while stack:
+        node = stack.pop()
+        
+        if node.is_goal_node():
+            
+            return node.last_move
+        
+        if node.depth > limit:
+            result="stop"
+          
+        for i in range(4):
+            node.successor(i)
+
+        stack.extend(node.children)
+                
+    return result
+            
+
