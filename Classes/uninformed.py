@@ -75,6 +75,36 @@ def ucs(initial_node: Node, table: Table):
                 # total_cost = cost + tree.get_cost(child, child[0])
                 print(child)
 
+def DLS(node: 'Node', limit):
+    
+    stack=[node]
 
-def ids():
-    pass
+    result = None
+
+    while stack:
+        node = stack.pop()
+        
+        if node.is_goal_node():
+            
+            return node.last_move
+        
+        if node.depth > limit:
+            result="stop"
+          
+        for i in range(4):
+            node.successor(i)
+
+        stack.extend(node.children)
+                
+    return result
+            
+def IDS(node: 'Node'):
+    limit=0
+    
+    while True:
+            
+        result=DLS(node, limit)
+        
+        if result != "stop":
+            return result
+        limit += 1
