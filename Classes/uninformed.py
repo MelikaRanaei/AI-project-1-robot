@@ -85,4 +85,13 @@ def DLS(node: 'Node', limit):
                 
     return result
             
-
+def IDS(node: 'Node'):
+    limit=0
+    
+    while True:
+            
+        result=DLS(node, limit)
+        
+        if result != "stop":
+            return result
+        limit += 1
