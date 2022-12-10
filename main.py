@@ -1,6 +1,6 @@
 from Classes.Table import Table, array
-from Classes.uninformed import ucs
-
+from Classes.uninformed import ucs, BFS
+from Classes.Node import Node
 
 if __name__ == "__main__":
     row, column = map(int, input().split(" "))
@@ -9,8 +9,10 @@ if __name__ == "__main__":
         matrix.append(input().split(" "))
 
     table = Table(matrix)
-    node = Node(table.robot , table.butter)
-    Ucs.ucs(node,table)
+    # tree = Tree()
+    node = Node(table.robot, table.butter)
+    ucs(node, table)
+    #BFS(table)
     print(table)
     print("------------------------------------------------")
     print("board: ")

@@ -1,165 +1,144 @@
 from Classes.Table import Table
-from Classes.Color import Colors
-# from Modules.Action import check_action
+from copy import deepcopy
 
+def Action(move: 'tuple'):
+    action = 0
+    if move == (1, 0):  # Right
+        action = (0, 1)
 
-def is_it_validate_action(x, y, robot_x, robot_y, table_board):
-    flag = True
-    print(f"robot is : {robot_x, robot_y} and with move: {(x, y)} wants to go: {robot_x+x, robot_y+y}")
-    if not table_board.is_on_table(robot_x + x, robot_y + y):
-        print(Colors.WARNING + f"movement " + Colors.UNDERLINE + f"{(x, y)}" + Colors.reset
-              + Colors.WARNING + " is not allowed because not on table.\n" + Colors.reset)
-        flag = False
+    elif move == (-1, 0):  # Left
+        action = (0, -1)
 
-    # Diagonal action is not allowed.
-    if x * y == 1 or x * y == -1:
-        print(Colors.WARNING + f"movement " + Colors.UNDERLINE + f"{(x, y)}" + Colors.reset
-              + Colors.WARNING + " is not allowed because it is diagonal.\n" + Colors.reset)
-        flag = False
+    elif move == (0, -1):  # Down
+        action = (1, 0)
 
-    # Robot can not go to a block cells.
-    xx = robot_x + x
-    yy = robot_y + y
-    height = table_board.height
-    if table_board.board[height-yy-1][xx-1] == float('inf'):
-        print(Colors.WARNING + f"movement " + Colors.UNDERLINE + f"{(x, y)}" + Colors.reset
-              + Colors.WARNING + " is not allowed because it is 'X' cell.\n" + Colors.reset)
-        flag = False
+    else:  # Up
+        action = (-1, 0)
+    return action
 
-    return flag
+def calc_matrix(matrix, move):
+    founded_goal = None
+    action = Action(move)
+    table = Table(matrix)
+    robot = table.robot
+    matrix[robot[0]][robot[1]] = matrix[robot[0]][robot[1]].replace('r', '')
+    next_cell = (robot[0] + action[0], robot[1] + action[1])
+    if matrix[next_cell[0]][next_cell[1]][-1] == 'b' and \
+            matrix[next_cell[0] + action[0]][next_cell[1] + action[1]][-1] not in ['b', 'x', 'p']:
+        print("fadjf;a")
+        matrix[next_cell[0]][next_cell[1]] = matrix[next_cell[0]][next_cell[1]][:-1]
+        matrix[next_cell[0]][next_cell[1]] += 'r'
+        matrix[next_cell[0] + action[0]][next_cell[1] + action[1]] += 'b'
+    elif matrix[next_cell[0]][next_cell[1]][-1] == 'b' and \
+            matrix[next_cell[0] + action[0]][next_cell[1] + action[1]][-1] == 'p':
+        matrix[next_cell[0]][next_cell[1]] = matrix[next_cell[0]][next_cell[1]][:-1]
+        matrix[next_cell[0]][next_cell[1]] += 'r'
+        matrix[next_cell[0] + action[0]][next_cell[1] + action[1]] = matrix[next_cell[0] + action[0]][next_cell[1] + action[1]][:-1]
+        matrix[next_cell[0] + action[0]][next_cell[1] + action[1]] += 'b'
+        founded_goal = [(next_cell[0] + action[0], next_cell[1] + action[1])]
+    else:
+        matrix[next_cell[0]][next_cell[1]] += 'r'
 
-
-# We are going to check an action like (1, 0) validate or not
-# and if it was, we'll push butters and save that in new_nodes[].
-def check_action(x, y, node, table_board: Table):
-    robot_y = node.robot[1]
-    robot_x = node.robot[0]
-    height, width = table_board.height, table_board.width
-    successor_array = []
-
-    result = is_it_validate_action(x, y, robot_x, robot_y, table_board)
-    # print(result)
-    if result:
-        if not (robot_y + y, robot_x + x) in node.butter:
-            """ It means there is no butters in the cell which robot is going to. """
-            print(f"width: {table_board.width}, height: {height}")
-
-            print(f"table_board[Rx][Ry]: {table_board.board[height - robot_y - 1][robot_x]}")
-            # print(f"table_board[Rx][Ry]: {table_board.board[robot_x][robot_y]}")
-            xx = robot_x+x
-            yy = robot_y+y
-            print(f"table_board[Rx+x][Ry+y]: {table_board.board[height-yy-1][xx]}\n")
-            successor_array.append(
-                (
-                    Node((robot_x + x, robot_y + y), node.butter),
-                    (x, y),
-                    table_board.board[height-yy-1][xx]
-                 )
-            )
-        else:
-            """ It means in spit of the last if statement there is a butter in that cell. """
-            # After moving robot to that cell the butter will pushed by robot
-            #   therefore, it must be checked the butter won't drop from table
-            if (y == -1 and robot_y == 1) or (y == 1 and robot_y == height-2) \
-                    or (x == -1 and robot_x == 1) or (x == 1 and robot_x == width - 2):
-                return
-
-            else:   # Movement of robot doesn't cause butter to drop from table.
-                # If there was a block cell or another butter in front of the butter:
-                if table_board.board[robot_y + 2*y][robot_x + 2*x] == float('inf') \
-                        or table_board.board[robot_y + 2*y][robot_x + 2*x] in table_board.butter:
-                    return
-
-                # After movement of robot butter on point:
-                if (robot_x + x, robot_y + y) in table_board.goals:
-                    return
-
-                # Now the action is validated and the butter won't fall off the table
-                #   and there is no problem with pushing butter by robot!
-                #   so, it's time to make a movement.
-
-                # for making a movement we must update the list of butters and robot positions.
-                butters_after_movement = node.butter.copy()
-                butters_after_movement.remove((robot_x + x, robot_y + y))
-                butters_after_movement.append((robot_x + 2*x, robot_y + 2*y))
-
-                print(f"width: {table_board.width}, height: {height}")
-                print(f"table_board[Rx][Ry]: {table_board.board[height-robot_y-1][robot_x]}")
-                xx = robot_x + x
-                yy = robot_y + y
-                print(f"table_board[Rx+x][Ry+y]: {table_board.board[height - yy - 1][xx]}\n")
-                # print(f"table_board[Rx+x][Ry+y]: {table_board.board[robot_x+x][robot_y+y]}\n")
-                successor_array.append(
-                    (
-                        Node((robot_x + x, robot_y + y), butters_after_movement),
-                        (x, y),
-                        table_board.board[height - yy - 1][xx]
-                    )
-                )
-    return successor_array
+    if founded_goal is None:
+        return matrix, None
+    else:
+        return matrix, founded_goal
 
 
 class Node:
-    parent_node: 'Node'
-    children_node: ['Node']
+    matrix: [list]
+    children: list
+    last_move: list
+    parent: 'Node'
+    last_move: list
+    children: ['Node']
+    founded_goal = []
 
-    def __init__(self, robot, butter=[], move=None, depth=0, parent=None ,cost=0, children_node=[]):
-        self.robot = robot
-        self.butter = butter
-        self.last_move = move
-        self.depth = depth #use in search algorithms
-        self.parent_node = parent
-        self.g_n = cost
-        self.children_node = children_node
-        self.is_visited = False
+    def __init__(self, matrix, children, last_move, depth=0, g_n=0, is_visited=False, parent=None):
+        self.matrix = matrix
+        self.depth = depth
+        self.parent = parent
+        self.children = children
+        self.g_n = g_n
+        self.last_move = last_move
+        self.is_visited = is_visited
 
-    # the returned array from the successor will be passed
-    #   to the join_children function to make a Tree
-    def join_children(self, successor_list: [('Node', tuple, int)]):
-        children = []
-        for tup in successor_list:
-            robot = tup[0].robot
-            butter = tup[0].butter
-            move = tup[1]
-            depth = self.depth + 1
-            parent = self
-            cost = tup[2] + self.g_n
-            children.append(Node(robot, butter, move, depth, parent, cost))
-        self.is_visited = True
-        self.children_node.extend(children)
-        return children
+    def is_valid_move(self, move: 'tuple'):
+        action = Action(move)
+        board = Table(self.matrix)
 
-    @staticmethod
-    def successor(current_node: 'Node', table_board: Table):
-        """ We want to figure out what is the subsequent nodes of the current node
-            by moving around in the table from this node """
-
-        subsequent_node = []
-
-        subsequent_node.extend(check_action(1, 0, current_node, table_board))
-        subsequent_node.extend(check_action(0, 1, current_node, table_board))
-        subsequent_node.extend(check_action(-1, 0, current_node, table_board))
-        subsequent_node.extend(check_action(0, -1, current_node, table_board))
-
-        # Joining each expanded node to the children array of the current node.
-        current_node.join_children(subsequent_node)
-
-        return subsequent_node
-
-    @staticmethod
-    def is_goal_node(node: 'Node', goals):
-        for butter in node.butter:
-            if butter in goals:
-                return True
+        r_x = board.robot[0]
+        r_y = board.robot[1]
+        next_move = (r_x + action[0], r_y + action[1])
+        if board.is_on_table(next_move[0], next_move[1]):
+            if next_move not in board.block:
+                if next_move in board.butters:
+                    if not (
+                                ((r_x + 2*action[0], r_y + 2*action[1]) in board.butters) or
+                                ((r_x + 2*action[0], r_y + 2*action[1]) in board.block) or
+                                (not board.is_on_table(r_x + 2*action[0], r_y + 2*action[1]))
+                            ):
+                        return True
+                    else:
+                        return False
+                else:
+                    return True
+            else:
+                return False
         return False
 
-    # To make a class hashable we need to
-    #   implement eq and hash attributes
-    def __eq__(self, other: 'Node'):
-        return self.robot == other.robot and self.butter == other.butter
+    def move(self, move, last_move):
+        action = Action(move)
+        table = Table(self.matrix.copy())
+        robot = table.robot
+        cost = table.costs_matrix[robot[0] + action[0]][robot[1] + action[1]]
+        new_g_n = self.g_n + cost
+        depth = self.depth + 1
+        board, found_goal = calc_matrix(deepcopy(self.matrix), move)
+        if found_goal is not None:
+            self.founded_goal.extend(found_goal)
+        last_move.append(move)
+        node = Node(board, [], last_move, depth, new_g_n, False, self)
+        self.children.append(node)
 
-    def __hash__(self):
-        hash_of_current_node = 0
-        for i in self.butter:
-            hash_of_current_node += hash(self.butter[i])
-        return hash_of_current_node + hash(self.robot)
+    def successor(self, ind):
+        moves = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        self.is_visited = True
+        if self.last_move is None:
+            last_move = []
+        else:
+            last_move = self.last_move.copy()
+        # print("initial_matrix: ", self.matrix)
+        # if ind == 2:
+        #     print("in upward move: ", self.is_valid_move(moves[ind], mat))
+        if self.is_valid_move(moves[ind]):
+            self.move(moves[ind], last_move)
+            print(moves[ind], ": ", self.children[-1].matrix)
+
+    def is_goal_node(self):
+        table = Table(deepcopy(self.matrix))
+        butters = table.butters
+
+        if len(butters) > len(self.founded_goal):
+            count = 0
+            if len(self.founded_goal) and len(butters):
+                for i in self.founded_goal:
+                    if i in butters:
+                        count += 1
+                if count == len(self.founded_goal):
+                    return True
+            else:
+                return False
+
+        elif len(butters) <= len(self.founded_goal):
+            count = 0
+            if len(butters) and len(self.founded_goal):
+                for i in butters:
+                    if i in self.founded_goal:
+                        count += 1
+                if count == len(butters):
+                    return True
+            else:
+                return False
+        else:
+            return False
