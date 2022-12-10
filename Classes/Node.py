@@ -142,3 +142,6 @@ class Node:
                 return False
         else:
             return False
+
+    
+
